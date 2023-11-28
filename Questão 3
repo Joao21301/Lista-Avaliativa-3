@@ -1,0 +1,71 @@
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+int ValidacaoPlaca(char *plc) {
+int tamanho = strlen(plc);
+
+    if(tamanho == 8 || tamanho == 7) {
+        for(int i = 0; i < tamanho; i++) {
+    if(i == 3 && plc[i] == '-') {
+continue;
+}
+    if(!isalnum(plc[i])) {
+return 0;
+}
+}
+return 1;
+}
+return 0;
+}
+
+int ValidacaoDiaDaSemana(char *dia) {
+    char*diasSemana[] = {"SEGUNDA-FEIRA", "TERCA-FEIRA", "QUARTA-FEIRA", "QUINTA-FEIRA", "SEXTA-FEIRA", "SABADO", "DOMINGO"};
+
+for (int i = 0; i < 7; i++) {
+    if(strcmp(dia, diasSemana[i]) == 0) {
+return i;
+}
+}
+return -1;
+}
+
+int main() {
+    char plc[20];
+    char dia[20];
+
+    fgets(plc, sizeof(plc), stdin);
+    fgets(dia, sizeof(dia), stdin);
+
+    plc[strcspn(plc, "\n")] = '\0';
+    dia[strcspn(dia, "\n")] = '\0';
+
+int placavalida = ValidacaoPlaca(plc);
+int Dia = ValidacaoDiaDaSemana(dia);
+
+    if(!placavalida && Dia == -1) {
+        printf("Placa invalida\nDia da semana invalido\n");
+return 0;
+    } else if (!placavalida){
+        printf("Placa invalida\n");
+return 0;
+    } else if (Dia == -1) {
+        printf("Dia da semana invalido\n");
+return 0;
+    }
+
+    char *diasSemana[] = {"segunda-feira", "terca-feira", "quarta-feira", "quinta-feira", "sexta-feira", "sabado", "domingo"};
+int ultDigitoDaPlaca = plc[strlen(plc) - 1] - '0';
+    if ((Dia == 0 && (ultDigitoDaPlaca == 0 || ultDigitoDaPlaca == 1)) ||
+        (Dia == 1 && (ultDigitoDaPlaca == 2 || ultDigitoDaPlaca == 3)) ||
+        (Dia == 2 && (ultDigitoDaPlaca == 4 || ultDigitoDaPlaca == 5)) ||
+        (Dia == 3 && (ultDigitoDaPlaca == 6 || ultDigitoDaPlaca == 7)) ||
+        (Dia == 4 && (ultDigitoDaPlaca == 8 || ultDigitoDaPlaca == 9))) {
+        printf("%s nao pode circular %s\n", plc, diasSemana [Dia]);
+    } else if (Dia == 5 || Dia == 6) {
+        printf("Nao ha proibicao no fim de semana\n");
+    } else {
+        printf("%s pode circular %s\n", plc, diasSemana [Dia]);
+    }
+return 0;
+}
